@@ -8,6 +8,6 @@ Automatic update of problems view when `scapegoat.xml` has been updated.
 
 ## Requirements
 
-The scapegoat job needs to have been run on the project to properly update the problems view.
+The scapegoat job needs to have run on the project to properly update the problems view.
 
 Run `ScapeGoat: Run parser`.
