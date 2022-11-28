@@ -1,6 +1,6 @@
 # scapegoat-vscode
 
-Visual Studio Code extension to parse scapegoat output XML files and show them in problem view.
+Visual Studio Code extension to parse [scapegoat](https://github.com/scapegoat-scala/scapegoat) output XML files and show them in problem view.
 
 ## Features
 
