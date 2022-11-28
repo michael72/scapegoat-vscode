@@ -9,12 +9,12 @@
   },
   "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
-    "url": "https://github.com/michael72/plantuml-helpers/issues"
+    "url": "https://github.com/michael72/scapegoat-vscode/issues"
   },
-  "homepage": "https://github.com/michael72/plantuml-helpers/blob/master/README.md",
+  "homepage": "https://github.com/michael72/scapegoat-vscode/blob/main/README.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/michael72/plantuml-helpers.git"
+    "url": "https://github.com/michael72/scapegoat-vscode.git"
   },
   "categories": [
     "Other"
@@ -43,15 +43,19 @@
     "fast-xml-parser": "^4.0.12"
   },
   "devDependencies": {
-    "@types/vscode": "^1.73.0",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.0",
     "@types/node": "16.x",
-    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@types/vscode": "^1.73.0",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.42.0",
-    "eslint": "^8.26.0",
+    "@vscode/test-electron": "^2.2.0",
+    "eslint": "^8.28.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.5.1",
+    "eslint-plugin-promise": "^6.1.1",
     "mocha": "^10.1.0",
-    "typescript": "^4.8.4",
-    "@vscode/test-electron": "^2.2.0"
+    "typescript": "^4.9.3"
   }
 }
