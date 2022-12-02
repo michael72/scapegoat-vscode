@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import { XMLParser } from "fast-xml-parser";
-import { filesMapGet } from "./filesmap";
 import { log } from "./logging";
 
 interface ScapeGoatWarning {
@@ -30,7 +29,10 @@ class ScapeGoatDiag {
     ["Hint", vscode.DiagnosticSeverity.Hint],
   ]);
 
-  static fromWarning(w: ScapeGoatWarning): ScapeGoatDiag | undefined {
+  static fromWarning(
+    w: ScapeGoatWarning,
+    fileToUri: (file: string) => vscode.Uri | undefined
+  ): ScapeGoatDiag | undefined {
     const mClz = ScapeGoatDiag.regexClass.exec(w._inspection);
     let text = w._explanation;
     if (mClz) {
@@ -40,7 +42,7 @@ class ScapeGoatDiag {
     const m = ScapeGoatDiag.regexFile.exec(w._file);
     if (m) {
       const fname = m[1];
-      const uri = filesMapGet(fname);
+      const uri = fileToUri(fname);
       if (uri) {
         const level = ScapeGoatDiag.levelMap.get(w._level);
         if (level === undefined) {
@@ -77,7 +79,7 @@ interface JsonObj {
   scapegoat: ScapeGoatObj;
 }
 
-export function* parse(xml: string) {
+export function* parse(xml: string, fileToUri: (file: string) => vscode.Uri | undefined) {
   const options = {
     ignoreAttributes: false,
     attributeNamePrefix: "_",
@@ -89,7 +91,7 @@ export function* parse(xml: string) {
 
   try {
     for (const w of getWarnings(sc)) {
-      const scDiag = ScapeGoatDiag.fromWarning(w);
+      const scDiag = ScapeGoatDiag.fromWarning(w, fileToUri);
       log("checking scala " + w._file);
 
       if (scDiag) {
