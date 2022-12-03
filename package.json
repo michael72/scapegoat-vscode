@@ -2,7 +2,7 @@
   "name": "scapegoat-vscode",
   "displayName": "ScapeGoat",
   "description": "Parses scapegoat output and shows as problems in scala files",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "michael72",
   "engines": {
     "vscode": "^1.73.0"

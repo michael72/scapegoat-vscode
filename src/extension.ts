@@ -9,10 +9,16 @@ let diagnosticCollection: vscode.DiagnosticCollection;
 
 function addDiagnostics(diag: vscode.Diagnostic, uri: vscode.Uri) {
   const saved_diag = diagnosticCollection.get(uri);
-  const diagnostics = saved_diag ? [...saved_diag, diag] : [diag];
-  diagnosticCollection.set(uri, diagnostics);
+  const diagnostics: vscode.Diagnostic[] = saved_diag ? [...saved_diag, diag] : [diag];
+  diagnosticCollection.set(uri, new Set(diagnostics));
   log(`${uri.fsPath}: ${diag.range.start.line}`);
   log(`${diag.severity}: ${diag.message}`);
+}
+
+function cleanupDiagnosics(uris: Set<vscode.Uri>) {
+  for (const uri of uris) {
+    diagnosticCollection.set(uri, []);
+  }
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -26,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     log("find all scala files");
     vscode.workspace.findFiles("**/*.scala").then(
-      (f) => addScalaFiles(f, addDiagnostics),
+      (f) => addScalaFiles(f, cleanupDiagnosics, addDiagnostics),
       () => {
         log("caught error while finding scala files.");
       }
