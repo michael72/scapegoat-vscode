@@ -13,7 +13,7 @@ interface ScapeGoatWarning {
 
 class ScapeGoatDiag {
   constructor(
-    public uri: vscode.Uri,
+    public fname: string,
     public lineno: number,
     public level: vscode.DiagnosticSeverity | undefined,
     public text: string,
@@ -30,8 +30,7 @@ class ScapeGoatDiag {
   ]);
 
   static fromWarning(
-    w: ScapeGoatWarning,
-    fileToUri: (file: string) => vscode.Uri | undefined
+    w: ScapeGoatWarning
   ): ScapeGoatDiag | undefined {
     const mClz = ScapeGoatDiag.regexClass.exec(w._inspection);
     let text = w._explanation;
@@ -42,16 +41,11 @@ class ScapeGoatDiag {
     const m = ScapeGoatDiag.regexFile.exec(w._file);
     if (m) {
       const fname = m[1];
-      const uri = fileToUri(fname);
-      if (uri) {
-        const level = ScapeGoatDiag.levelMap.get(w._level);
-        if (level === undefined) {
-          log(`unknown level type: '${w._level}`);
-        }
-        return new ScapeGoatDiag(uri, lineno, level, text, w._snippet);
-      } else {
-        log(`unable to process ${fname}`);
+      const level = ScapeGoatDiag.levelMap.get(w._level);
+      if (level === undefined) {
+        log(`unknown level type: '${w._level}`);
       }
+      return new ScapeGoatDiag(fname, lineno, level, text, w._snippet);
     } else {
       log(`file did not match regex ${w._file}`);
     }
@@ -79,7 +73,7 @@ interface JsonObj {
   scapegoat: ScapeGoatObj;
 }
 
-export function* parse(xml: string, fileToUri: (file: string) => vscode.Uri | undefined) {
+export function* parseScapeGoat(xml: string) {
   const options = {
     ignoreAttributes: false,
     attributeNamePrefix: "_",
@@ -91,7 +85,7 @@ export function* parse(xml: string, fileToUri: (file: string) => vscode.Uri | un
 
   try {
     for (const w of getWarnings(sc)) {
-      const scDiag = ScapeGoatDiag.fromWarning(w, fileToUri);
+      const scDiag = ScapeGoatDiag.fromWarning(w);
       log("checking scala " + w._file);
 
       if (scDiag) {
@@ -103,7 +97,7 @@ export function* parse(xml: string, fileToUri: (file: string) => vscode.Uri | un
         );
         diag.code = scDiag.code;
         diag.source = "scapegoat";
-        yield [diag, scDiag.uri] as const;
+        yield [diag, scDiag.fname] as const;
       }
     }
   } catch (_) {
