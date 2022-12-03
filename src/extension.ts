@@ -10,7 +10,7 @@ let diagnosticCollection: vscode.DiagnosticCollection;
 function addDiagnostics(diag: vscode.Diagnostic, uri: vscode.Uri) {
   const saved_diag = diagnosticCollection.get(uri);
   const diagnostics: vscode.Diagnostic[] = saved_diag ? [...saved_diag, diag] : [diag];
-  diagnosticCollection.set(uri, new Set(diagnostics));
+  diagnosticCollection.set(uri, [... new Set(diagnostics)]);
   log(`${uri.fsPath}: ${diag.range.start.line}`);
   log(`${diag.severity}: ${diag.message}`);
 }
