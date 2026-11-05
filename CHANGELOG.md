@@ -8,8 +8,8 @@ See [Keep a Changelog](http://keepachangelog.com/).
 
 ### Changed
 
-- Updated dependencies (TypeScript 6, fast-xml-parser 5, ESLint 9 with flat config, typescript-eslint 8).
-- Requires VS Code 1.90 or newer.
+- Updated dependencies (TypeScript 6, fast-xml-parser 5, ESLint 10 with flat config, typescript-eslint 8).
+- Requires VS Code 1.145 or newer.
 - The inspection name is shown as diagnostic code instead of the code snippet.
 - Unit tests run with plain mocha (no VS Code download required).
 
